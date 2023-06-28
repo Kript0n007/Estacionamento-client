@@ -1,0 +1,89 @@
+<template>
+    <div class="container mt-5">
+        <div class="row">
+            <div class="col-md-10 text-start">
+                <h2 class="fs-3">Condutores</h2>
+            </div>
+            <div class="col-md-2 d-grid gap-2">
+                <router-link to="/condutor/formulario" type="button" class="btn btn-primary">Cadastrar</router-link>
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-md-12">
+                <table class="table table-striped">
+                    <thead>
+                        <tr class="text-menor">
+                            <th scope="col">Numero</th>
+                            <th scope="col">Ativo</th>
+                            <th scope="col">Nome</th>
+                            <th scope="col">Cpf</th>
+                            <th scope="col">Telefone</th>
+                            <th scope="col">Ações</th>
+                        </tr>
+                    </thead>
+                    <tbody class="table-group-divider">
+                        <tr class="table-dark" v-for="item in condutorList" :key="item.id">
+                            <td class="col-md-1"> {{ item.id }} </td>
+                            <td class="col-md-2">
+                                <span v-if="item.ativo" class="badge text-bg-success"> Ativo </span>
+                                <span v-if="!item.ativo" class="badge text-bg-danger"> Inativo </span>
+                            </td>
+                            <td> {{ item.nome }}</td>
+                            <td> {{ item.cpf}}</td>
+                            <td>{{ item.telefone}}</td>
+                            <th class="col-md-2">
+                                <div>
+                                    <router-link type="button" class="btn btn-outline-warning"
+                                        :to="{ name: 'condutor-formulario-editar-view', query: { id: item.id, form: 'editar' } }">
+                                        <i class="bi bi-pencil-fill"></i>
+                                    </router-link>
+                                    <router-link type="button" class="btn btn-outline-danger ms-3"
+                                        :to="{ name: 'condutor-formulario-excluir-view', query: { id: item.id, form: 'excluir' } }">
+                                        <i class="bi bi-trash-fill"></i>
+                                    </router-link>
+                                </div>
+                            </th>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+</template>
+
+<script lang="ts">
+import { defineComponent } from 'vue';
+
+import  condutorClient  from '@/client/condutor.client';
+import { Condutor } from '@/model/condutor';
+
+export default defineComponent({
+    name: 'ModeloLista',
+    data(){
+        return {
+            condutorList: new Array<Condutor>()
+        }
+    },
+    mounted() {
+        this.findAll();
+    },
+    methods: {
+        findAll() {
+            condutorClient.listAll()
+                .then(sucess => {
+                    this.condutorList = sucess;
+                })
+                .catch(error => {
+                    console.log(error);
+                });
+        }
+    }
+});
+
+</script>
+
+<style lang="scss">
+.text-menor {
+    font-size: 14px;
+}
+</style>
