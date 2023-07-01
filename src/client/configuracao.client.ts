@@ -39,6 +39,7 @@ class ConfiguracaoClient {
         }
     }
 
+
     public async editar(id: number, configuracao : Configuracao) : Promise<string> {
         try {
             return (await this.axiosClient.put<string>(`${id}`, configuracao)).data
@@ -60,6 +61,16 @@ class ConfiguracaoClient {
             return Promise.reject(error.response)
         } 
     }
+
+    // public async obterConfiguracao(): Promise<Configuracao> {
+    //     try {
+    //       const response = await this.axiosClient.get<Configuracao>('/');
+    //       return response.data;
+    //     } catch (error) {
+    //       throw new Error('Erro ao obter a configuração: ' + error.message);
+    //     }
+    //   }
+    
 }
 
 export default new ConfiguracaoClient();

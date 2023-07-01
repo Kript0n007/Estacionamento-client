@@ -4,3 +4,4 @@ export class AbstractEntity{
     atualizacao! : Date
     ativo! : boolean
 }
+
